@@ -8,11 +8,25 @@ from sklearn.cluster import SpectralClustering
 
 
 def norm_cov_matrix(df):
+	"""
+	:param df: pandas dataframe to use
+	:return: normalized covariance matrix of a pandas dataframe
+	"""
 	var = numpy.sqrt(df.var())
 	return (df.loc[:, var.index]/var).cov()
 
 
 def cluster_variables(df: pandas.DataFrame, n_clusters: int, sigma: float, selected_variables: list=None, target: list=None, return_results: bool=False, **kwargs):
+	"""
+	:param df: pandas dataframe
+	:param n_clusters: number of cluster to create
+	:param sigma: decay constant for affinity matrix
+	:param selected_variables: varaibles to use in clustering
+	:param target: optional target variable to spot correlations
+	:param return_results: return full clusters description
+	:param kwargs: kwargs for seaborn heatmap
+	:return: full clusters description
+	"""
 	# Affinity ------------------------------------------------------------------------------
 	if selected_variables is None:
 		cov_matrix = numpy.abs(norm_cov_matrix(df))
@@ -82,6 +96,17 @@ def cluster_variables(df: pandas.DataFrame, n_clusters: int, sigma: float, selec
 
 
 def plot_univariate(df: pandas.DataFrame, x_list: list, y_list: list, ylim: tuple=(None, None), mean_variables: list=None, order=None, hlines: list=None, grid: bool=False):
+	"""
+	:param df: pandas dataframe to plot
+	:param x_list: x variables to plot
+	:param y_list: y variables to plot
+	:param ylim: y axis limit
+	:param mean_variables: variables of which plot the mean
+	:param order: sorting for x values
+	:param hlines: list of float. plots horizontal lines
+	:param grid: show grid
+	:return: None
+	"""
 	plt.rcParams['figure.figsize'] = (18, 10)
 
 	for x in x_list:
